@@ -168,6 +168,85 @@ z-index:1;
 100%{transform:translateY(-10vh) scale(1);}
 }
 
+@keyframes float-btn {
+0%, 100% { transform: translateY(0px); }
+50% { transform: translateY(-10px); }
+}
+
+.birthday-heading {
+font-size:2.5em;
+font-weight:700;
+background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #ff9a9e 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+animation: pulse 2s ease-in-out infinite, glow-text 3s ease-in-out infinite;
+text-shadow: 0 0 20px rgba(255, 154, 158, 0.5);
+letter-spacing: 1px;
+}
+
+@keyframes pulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.05); }
+}
+
+@keyframes glow-text {
+0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 154, 158, 0.5)); }
+50% { filter: drop-shadow(0 0 20px rgba(255, 154, 158, 0.8)); }
+}
+
+.birthday-text {
+animation: slideInUp 0.8s ease forwards;
+}
+
+.birthday-text:nth-child(2) {
+animation-delay: 0.2s;
+opacity: 0;
+}
+
+.birthday-text:nth-child(3) {
+animation-delay: 0.4s;
+opacity: 0;
+}
+
+@keyframes slideInUp {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.sparkle {
+display: inline-block;
+animation: sparkleShine 1.5s ease-in-out infinite;
+margin: 0 5px;
+color: #ff6b81;
+-webkit-text-fill-color: #ff6b81;
+font-size: 1.1em;
+}
+
+@keyframes sparkleShine {
+0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+50% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+}
+
+.star {
+position: fixed;
+font-size: 1.5em;
+pointer-events: none;
+animation: twinkle 3s ease-in-out infinite;
+z-index: 0;
+}
+
+@keyframes twinkle {
+0%, 100% { opacity: 0; }
+50% { opacity: 1; }
+}
+
 .music-btn-container {
 position:fixed;
 top:20px;
@@ -314,11 +393,11 @@ const screens = [
 </div>`,
 
 `<div class="fade">
-<h1>Happy Birthday, Vidisha 🎂</h1>
-<p>I'm genuinely glad our paths crossed.</p>
-<p>And I think this story deserves at least one more chapter.</p>
+<h1 class="birthday-heading">Happy Birthday, Vidisha <span class="sparkle">🎂</span></h1>
+<p class="birthday-text">I'm genuinely glad our paths crossed.</p>
+<p class="birthday-text">And I think this story deserves at least one more chapter.</p>
 <div class="button-group">
-<button onclick="proposal()">✨</button>
+<button onclick="proposal()" style="font-size: 24px; padding: 15px 25px; animation: float-btn 3s ease-in-out infinite;">✨</button>
 </div>
 </div>`
 
@@ -339,14 +418,15 @@ function next(){
 
 function proposal(){
   document.body.classList.add("glow");
+  createStars();
   game.innerHTML = `
   <div class="fade">
-  <h1>So... we're meeting again, right? ☕</h1>
+  <h1 style="animation: pulse 2s ease-in-out infinite; font-size: 28px;">So... we're meeting again, right? ☕</h1>
 
-  <p>Just coffee.</p>
-  <p>Maybe a little birthday extension.</p>
+  <p style="animation: slideInUp 0.8s ease forwards; opacity: 0; animation-delay: 0.2s;">Just coffee.</p>
+  <p style="animation: slideInUp 0.8s ease forwards; opacity: 0; animation-delay: 0.4s;">Maybe a little birthday extension.</p>
   <div class="button-group">
-    <button id="yesBtn" onclick="yes()">Yes, obviously 😌</button>
+    <button id="yesBtn" onclick="yes()" style="animation: float-btn 2.5s ease-in-out infinite;">Yes, obviously 😌</button>
   </div>
 
   <button id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()" onclick="moveNo()" style="position:fixed;">No 🙃</button>
@@ -381,12 +461,27 @@ function moveNo(){
 }
 
 function createParticles(){
-  for(let i=0;i<40;i++){
+  for(let i=0;i<50;i++){
     let p=document.createElement("div");
     p.classList.add("particle");
     p.style.left=Math.random()*100+"vw";
     p.style.animationDuration=(Math.random()*5+5)+"s";
+    p.style.animationDelay=(Math.random()*0.5)+"s";
     document.body.appendChild(p);
+  }
+}
+
+function createStars(){
+  const emojis = ['✨', '🌟', '💫', '⭐'];
+  for(let i=0; i<15; i++){
+    let star = document.createElement("div");
+    star.classList.add("star");
+    star.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    star.style.left = Math.random() * 100 + "vw";
+    star.style.top = Math.random() * 100 + "vh";
+    star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+    star.style.animationDelay = Math.random() * 0.5 + "s";
+    document.body.appendChild(star);
   }
 }
 
@@ -396,4 +491,3 @@ game.innerHTML = screens[0];
 
 </body>
 </html>
-
