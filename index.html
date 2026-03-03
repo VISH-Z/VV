@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Vidisha 🎂</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#141e30,#243b55);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+width:100%;
+text-align:center;
+transition:1.5s;
+padding:20px;
+}
+
+.container{
+max-width:520px;
+width:100%;
+padding:30px;
+z-index:2;
+}
+
+button{
+padding:12px 26px;
+margin:15px 10px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-size:15px;
+background:#ff6b81;
+color:white;
+transition:0.3s;
+touch-action:manipulation;
+-webkit-user-select:none;
+user-select:none;
+}
+
+button:hover{
+transform:scale(1.08);
+}
+
+button:active {
+transform:scale(0.95);
+}
+
+@media (max-width:768px){
+body{
+padding:15px;
+min-height:100vh;
+}
+
+.container{
+max-width:100%;
+padding:20px;
+}
+
+button{
+padding:14px 24px;
+margin:12px auto;
+font-size:14px;
+width:90%;
+max-width:280px;
+display:block;
+}
+
+h1{
+font-size:24px;
+margin:10px 0;
+}
+
+h2{
+font-size:20px;
+margin:10px 0;
+}
+
+p{
+font-size:14px;
+margin:8px 0;
+}
+}
+
+@media (max-width:480px){
+.container{
+padding:15px;
+}
+
+button{
+padding:12px 20px;
+margin:10px auto;
+font-size:13px;
+width:85%;
+}
+
+h1{
+font-size:20px;
+}
+
+h2{
+font-size:18px;
+}
+
+p{
+font-size:13px;
+}
+
+.music-btn {
+padding:8px 12px !important;
+font-size:12px !important;
+}
+}
+
+.fade{
+animation:fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(15px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+.glow{
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+}
+
+/* Floating particles */
+.particle{
+position:fixed;
+width:6px;
+height:6px;
+background:white;
+border-radius:50%;
+opacity:0.5;
+animation:float 10s linear infinite;
+pointer-events:none;
+z-index:1;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh) scale(0.5);}
+100%{transform:translateY(-10vh) scale(1);}
+}
+
+.music-btn-container {
+position:fixed;
+top:20px;
+right:20px;
+z-index:1000;
+}
+
+.music-btn {
+padding:10px 15px;
+background:#ff4e88;
+color:white;
+border:none;
+border-radius:20px;
+cursor:pointer;
+font-size:14px;
+box-shadow: 0 4px 15px rgba(255, 78, 136, 0.3);
+transition: 0.3s;
+}
+
+.music-btn:hover {
+transform: scale(1.1);
+}
+
+.music-btn:active {
+transform: scale(0.95);
+}
+
+@media (max-width:480px) {
+.music-btn-container {
+top:10px;
+right:10px;
+}
+
+.music-btn {
+padding:8px 12px;
+font-size:12px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+<source src="Baarishein - Anuv Jain.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+
+<div class="music-btn-container">
+<button class="music-btn" onclick="toggleMusic()">🔊 Music</button>
+</div>
+
+<div class="container" id="game"></div>
+
+<script>
+
+const game = document.getElementById("game");
+const music = document.getElementById("bgMusic");
+let musicPlaying = false;
+let step = 0;
+let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+function toggleMusic(){
+  if(musicPlaying){
+    music.pause();
+    musicPlaying = false;
+  }else{
+    music.play().catch(err => console.log("Music play failed:", err));
+    musicPlaying = true;
+  }
+}
+
+const screens = [
+
+`<div class="fade">
+<h2>Some birthdays are loud.</h2>
+<p>Some are full of plans.</p>
+<p>And some... are quiet reminders that time is moving.</p>
+
+<button onclick="start()">Continue</button>
+</div>`,
+
+`<div class="fade">
+<p>But sometimes, you meet someone randomly...</p>
+<p>And suddenly a regular day feels lighter.</p>
+<button onclick="next()">Continue</button>
+</div>`,
+
+`<div class="fade">
+<h2>User detected: Vidisha</h2>
+<p>Status: Calm chaos.</p>
+<p>Special ability: Making conversations unexpectedly easy.</p>
+<button onclick="next()">Continue</button>
+</div>`,
+
+`<div class="fade">
+<p>Today, you unlocked a new year.</p>
+<p>And honestly...</p>
+<p>I'm just glad I met you in this one.</p>
+<button onclick="next()">Continue</button>
+</div>`,
+
+`<div class="fade">
+<p>Pune has cafés.</p>
+<p>Late night drives.</p>
+<p>Random conversations.</p>
+<p>But that day... it had you.</p>
+<button onclick="next()">Continue</button>
+</div>`,
+
+`<div class="fade">
+
+<p>It wasn't dramatic.</p>
+<p>Just a conversation.</p>
+<p>A few smiles.</p>
+<p>Maybe a little teasing.</p>
+<button onclick="next()">Continue</button>
+</div>`,
+
+`<div class="fade">
+<p>But somewhere between all that...</p>
+<p>I found myself hoping</p>
+<p>it wasn't a one-time thing.</p>
+<button onclick="next()">Continue</button>
+</div>`,
+
+`<div class="fade">
+<h2>So today...</h2>
+<p>I don't just wish you a happy birthday.</p>
+<p>I wish you a year full of moments that feel effortless.</p>
+<p>People who feel easy.</p>
+<p>And risks that feel worth taking.</p>
+<button onclick="next()">Continue</button>
+</div>`,
+
+`<div class="fade">
+<p>And if birthdays allow one small, spontaneous decision...</p>
+<p>Maybe you let that Bangalore guy take you out once more.</p>
+<p>No pressure.</p>
+<p>Just good coffee. Better conversation.</p>
+<p>And a chance to make this birthday memory slightly more special.</p>
+<button onclick="next()">Continue</button>
+</div>`,
+
+`<div class="fade">
+<h1>Happy Birthday, Vidisha 🎂</h1>
+<p>I'm genuinely glad our paths crossed.</p>
+<p>And I think this story deserves at least one more chapter.</p>
+<button onclick="proposal()">✨</button>
+
+</div>`
+
+];
+
+function start(){
+  music.play().catch(err => console.log("Music play failed:", err));
+  musicPlaying = true;
+  next();
+}
+
+function next(){
+  step++;
+  if(step < screens.length) {
+    game.innerHTML = screens[step];
+  }
+}
+
+function proposal(){
+  document.body.classList.add("glow");
+  game.innerHTML = `
+  <div class="fade">
+  <h1>So... we're meeting again, right? ☕</h1>
+
+  <p>Just coffee.</p>
+  <p>Maybe a little birthday extension.</p>
+  <button id="yesBtn" onclick="yes()">Yes, obviously 😌</button>
+
+  <button id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()">No 🙃</button>
+
+  </div>
+  `;
+}
+
+function yes(){
+  game.innerHTML = `
+  <div class="fade">
+  <h1>Good choice. 😌</h1>
+  <p>I'll plan the coffee.</p>
+  <p>You just show up and pretend it wasn't your idea.</p>
+  <p>Deal? ☕ ✨</p>
+
+  </div>`;
+  createParticles();
+}
+
+function moveNo(){
+  const btn = document.getElementById("noBtn");
+  if(btn) {
+    btn.style.position="fixed";
+    btn.style.top=Math.random()*window.innerHeight+"px";
+    btn.style.left=Math.random()*window.innerWidth+"px";
+  }
+}
+
+function createParticles(){
+  for(let i=0;i<40;i++){
+    let p=document.createElement("div");
+    p.classList.add("particle");
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(Math.random()*5+5)+"s";
+    document.body.appendChild(p);
+  }
+}
+
+game.innerHTML = screens[0];
+
+</script>
+
+</body>
+</html>
